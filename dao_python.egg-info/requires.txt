@@ -1,4 +1,6 @@
-black==22.10.0
 eth-brownie==1.19.3
 pydantic==1.10.9
+
+[test]
+black==22.10.0
 ruff==0.0.272

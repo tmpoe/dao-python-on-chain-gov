@@ -1,3 +1,27 @@
+[project]
+name = "dao_python"
+version= "0.0.1"
+authors = [
+    {name = "Torok Mark Patrik", email = "torok.mark.patrik@gmail.com"},
+]
+description = "Pet project for learning"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["eth-brownie==1.19.3", "pydantic==1.10.9"]
+
+
+[build-system]
+requires = ["eth-brownie==1.19.3", "pydantic==1.10.9"]
+
+[project.optional-dependencies]
+test = [
+    "black==22.10.0",
+    "ruff==0.0.272",
+]
+
+[tool.setuptools]
+py-modules = []
+
 [tool.ruff]
 line-length = 88
 
