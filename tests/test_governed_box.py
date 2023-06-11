@@ -49,17 +49,18 @@ def test_governable_box_proposal_executed(move_blocks):
     THEN: The stored value is changed to TEST_BOX_VALUE
     """
     config = TestDeployConfig()
+    config.QUORUM_FRACTION = 0
     deploy_governed_box(config)
     box = Box[-1]
 
     proposal_id = propose(box, TEST_BOX_VALUE)
-    
+
     move_blocks(2)
     vote(proposal_id, 1)
     move_blocks(config.VOTING_PERIOD)
-    
+
     queue(TEST_BOX_VALUE)
     sleep(config.MIN_DELAY)
     execute(TEST_BOX_VALUE)
-    
+
     assert box.retrieve() == TEST_BOX_VALUE

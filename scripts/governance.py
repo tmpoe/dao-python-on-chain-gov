@@ -40,16 +40,11 @@ def queue(store_value):
     tx = MyGovernor[-1].queue(
         [Box[-1].address],
         [0],
-        [get_encoded_function(store_value)],
+        [_get_encoded_function(store_value)],
         Web3.keccak(text=PROPOSAL_DESCRIPTION).hex(),
         {"from": account},
     )
     tx.wait(1)
-
-
-def get_encoded_function(store_value):
-    args = (store_value,)
-    return Contract.from_abi("Box", Box[-1], Box.abi).store.encode_input(*args)
 
 
 def execute(store_value):
@@ -57,8 +52,13 @@ def execute(store_value):
     tx = MyGovernor[-1].execute(
         [Box[-1].address],
         [0],
-        [get_encoded_function(store_value)],
+        [_get_encoded_function(store_value)],
         Web3.keccak(text=PROPOSAL_DESCRIPTION).hex(),
         {"from": account},
     )
     tx.wait(1)
+
+
+def _get_encoded_function(store_value):
+    args = (store_value,)
+    return Contract.from_abi("Box", Box[-1], Box.abi).store.encode_input(*args)

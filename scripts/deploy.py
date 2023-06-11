@@ -25,8 +25,10 @@ def deploy_governor(account, deployConfig: DeployConfig, redeploy=False, verify=
     )
 
     # is this really necessary? Why do I neet to delegate to myself?
+    # it is - you always have to delegate the voting power of the token
+    # at mint none is delegated
+    # usually at transfer it is autodelegated to the trasnferee
     gov_tok.delegate(account, {"from": account})
-    print(f"Checkpoints: {gov_tok.numCheckpoints(account)}")
 
     gov_timelock = (
         GovernanceTimelock.deploy(

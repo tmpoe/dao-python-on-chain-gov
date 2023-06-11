@@ -17,11 +17,17 @@ pip install -c constraints.txt .
 Compile
 
 ```
-brownie compile
+make compile
 ```
 
 Run tests
 
 ```
-set -o allexport; source .env; set +o allexport; brownie test (--trace)
+make test
+```
+
+Lint
+
+```
+make lint
 ```
