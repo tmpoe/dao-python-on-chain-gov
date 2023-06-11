@@ -5,7 +5,7 @@ test:
 
 lint:
 	black .; \
-	ruff --fix scripts/ tests/
+	ruff scripts/ tests/
 
 install:
 	pip install ."[test]"
