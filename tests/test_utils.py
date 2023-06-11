@@ -1,7 +1,7 @@
 import json
 import os
 from brownie.network.account import Account
-from brownie import web3
+from brownie import web3, accounts
 from schemas.models import AccountImportData
 
 from scripts.utils import get_account
@@ -42,3 +42,13 @@ def test_get_account_by_id():
     os.remove(file_path)
 
     assert account.address[2:].lower() == acc_data["address"]
+
+
+def test_get_local_account():
+    """
+    GIVEN: A local blockchain
+    WHEN get_account is called without input
+    THEN The first account is returned
+    """
+    account = get_account()
+    assert account == accounts[0]

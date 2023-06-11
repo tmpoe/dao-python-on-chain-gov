@@ -16,7 +16,7 @@ def get_account(
 ) -> Account:
     if idx is not None:
         return accounts[idx]
-    if id is not None:
+    if account_import_data is not None:
         return accounts.load(
             account_import_data.file_path, account_import_data.password
         )
