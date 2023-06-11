@@ -1,13 +1,17 @@
-from utils import get_account
-from brownie import GovernanceToken, GovernanceTimeLock, Governor, Box, config, network
+from scripts.config import DeployConfig
+from scripts.utils import get_account
+from brownie import (
+    GovernanceToken,
+    GovernanceTimelock,
+    MyGovernor,
+    Box,
+    config,
+    network,
+)
 from web3 import constants
 
 
-MIN_DELAY = 2 * 24 * 60 * 60
-
-
-def deploy_governor(redeploy=False, verify=False):
-    account = get_account()
+def deploy_governor(account, deployConfig: DeployConfig, redeploy=False, verify=False):
 
     gov_tok = (
         GovernanceToken.deploy(
@@ -25,8 +29,8 @@ def deploy_governor(redeploy=False, verify=False):
     print(f"Checkpoints: {gov_tok.numCheckpoints(account)}")
 
     gov_timelock = (
-        GovernanceTimeLock.deploy(
-            MIN_DELAY,
+        GovernanceTimelock.deploy(
+            deployConfig.MIN_DELAY,
             [],
             [],
             {"from": account},
@@ -34,43 +38,44 @@ def deploy_governor(redeploy=False, verify=False):
                 "verify", verify
             ),
         )
-        if (redeploy or not len(GovernanceTimeLock))
-        else GovernanceTimeLock[-1]
+        if (redeploy or not len(GovernanceTimelock))
+        else GovernanceTimelock[-1]
     )
 
     governor = (
-        Governor.deploy(
+        MyGovernor.deploy(
             gov_tok,
             gov_timelock,
+            deployConfig.QUORUM_FRACTION,
+            deployConfig.VOTING_PERIOD,
+            deployConfig.VOTING_DELAY,
             {"from": account},
             publish_source=config["networks"][network.show_active()].get(
                 "verify", verify
             ),
         )
-        if (redeploy or not len(Governor))
-        else Governor[-1]
+        if (redeploy or not len(MyGovernor))
+        else MyGovernor[-1]
     )
 
     proposer_role = gov_timelock.PROPOSER_ROLE()
     executor_role = gov_timelock.EXECUTOR_ROLE()
-    timelock_admin_role = gov_timelock.TIMELOCK_ADMIN_ROLE()
 
     gov_timelock.grantRole(proposer_role, governor, {"from": account})
     gov_timelock.grantRole(executor_role, constants.ADDRESS_ZERO, {"from": account})
 
-    # newer contract version supports admin as constructor arg
-    tx = gov_timelock.revokeRole(timelock_admin_role)
-    tx.wait(1)
-    gov_timelock.grantRole(timelock_admin_role, account, {"from": account})
 
-
-def deploy_governed_contract():
+def deploy_governed_box(deployConfig: DeployConfig):
     account = get_account()
-    box = Box.deploy(0, {"from": account})
-    tx = box.transferOwnership(GovernanceTimeLock[-1], {"from": account})
+    deploy_governor(account, deployConfig)
+    box = deploy_box(account)
+    tx = box.transferOwnership(GovernanceTimelock[-1], {"from": account})
     tx.wait(1)
+
+
+def deploy_box(account):
+    return Box.deploy({"from": account})
 
 
 def main():
-    deploy_governor()
-    deploy_governed_contract()
+    deploy_governed_box()

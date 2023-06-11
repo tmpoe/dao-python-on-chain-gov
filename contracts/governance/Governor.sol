@@ -14,19 +14,31 @@ contract MyGovernor is
     GovernorVotesQuorumFraction,
     GovernorTimelockControl
 {
-    constructor(IVotes _token, TimelockController _timelock)
+    uint256 public s_votingDelay;
+    uint256 public s_votingPeriod;
+
+    constructor(
+        IVotes _token,
+        TimelockController _timelock,
+        uint256 _quorumPercentage,
+        uint256 _votingPeriod,
+        uint256 _votingDelay
+    )
         Governor("MyGovernor")
         GovernorVotes(_token)
-        GovernorVotesQuorumFraction(4)
+        GovernorVotesQuorumFraction(_quorumPercentage)
         GovernorTimelockControl(_timelock)
-    {}
-
-    function votingDelay() public pure override returns (uint256) {
-        return 7200; // 1 day
+    {
+        s_votingDelay = _votingDelay;
+        s_votingPeriod = _votingPeriod;
     }
 
-    function votingPeriod() public pure override returns (uint256) {
-        return 50400; // 1 week
+    function votingDelay() public view override returns (uint256) {
+        return s_votingDelay; // 1 day
+    }
+
+    function votingPeriod() public view override returns (uint256) {
+        return s_votingPeriod; // 1 week
     }
 
     // The following functions are overrides required by Solidity.
