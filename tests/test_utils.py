@@ -50,5 +50,15 @@ def test_get_local_account():
     WHEN get_account is called without input
     THEN The first account is returned
     """
+    assert get_account() == accounts[0]
+
+
+def test_get_account_from_wallet(monkeypatch):
+    """
+    GIVEN: A wallet
+    WHEN get_account is called without input
+    THEN The account for the imported wallet is returned
+    """
+    monkeypatch.setattr("scripts.utils.LOCAL_BLOCKCHAIN_ENVIRONMENTS", [])
     account = get_account()
-    assert account == accounts[0]
+    assert account.private_key[2:] == os.environ.get("RANDOM_PRIVATE_KEY")
