@@ -5,8 +5,6 @@ from brownie import (
     GovernanceTimelock,
     MyGovernor,
     Box,
-    config,
-    network,
 )
 from web3 import constants
 
@@ -16,9 +14,6 @@ def deploy_governor(account, deployConfig: DeployConfig, redeploy=False, verify=
     gov_tok = (
         GovernanceToken.deploy(
             {"from": account},
-            publish_source=config["networks"][network.show_active()].get(
-                "verify", verify
-            ),
         )
         if (redeploy or not len(GovernanceToken))
         else GovernanceToken[-1]
@@ -36,9 +31,6 @@ def deploy_governor(account, deployConfig: DeployConfig, redeploy=False, verify=
             [],
             [],
             {"from": account},
-            publish_source=config["networks"][network.show_active()].get(
-                "verify", verify
-            ),
         )
         if (redeploy or not len(GovernanceTimelock))
         else GovernanceTimelock[-1]
@@ -52,9 +44,6 @@ def deploy_governor(account, deployConfig: DeployConfig, redeploy=False, verify=
             deployConfig.VOTING_PERIOD,
             deployConfig.VOTING_DELAY,
             {"from": account},
-            publish_source=config["networks"][network.show_active()].get(
-                "verify", verify
-            ),
         )
         if (redeploy or not len(MyGovernor))
         else MyGovernor[-1]
@@ -80,4 +69,4 @@ def deploy_box(account):
 
 
 def main():
-    deploy_governed_box()
+    deploy_governed_box(DeployConfig())

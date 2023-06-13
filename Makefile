@@ -15,3 +15,9 @@ install:
 
 compile:
 	brownie compile
+
+add-sepolia:
+	set -o allexport; source .env; brownie networks add Ethereum sepolia host="https://sepolia.infura.io/v3/${WEB3_INFURA_PROJECT_ID}" chainid=11155111
+
+deploy-sepolia:
+	set -o allexport; source .env; brownie run scripts/deploy.py --network sepolia

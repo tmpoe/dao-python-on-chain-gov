@@ -31,3 +31,9 @@ Lint
 ```
 make lint
 ```
+
+Add sepolia
+
+```
+brownie networks add Ethereum sepolia host="https://rpc.sepolia.dev" chainid=11155111
+```

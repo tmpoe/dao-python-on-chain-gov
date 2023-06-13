@@ -61,4 +61,4 @@ def test_get_account_from_wallet(monkeypatch):
     """
     monkeypatch.setattr("scripts.utils.LOCAL_BLOCKCHAIN_ENVIRONMENTS", [])
     account = get_account()
-    assert account.private_key[2:] == os.environ.get("RANDOM_PRIVATE_KEY")
+    assert account.private_key[2:] == os.environ.get("PRIVATE_KEY")
