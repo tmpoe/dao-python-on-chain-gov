@@ -15,6 +15,11 @@ requires = ["setuptools", "wheel"]
 
 [project.optional-dependencies]
 test = [
+    "pytest~=7.3.2",
+    "pytest-cov~=4.1.0",
+]
+
+lint = [
     "black==22.10.0",
     "ruff==0.0.272",
 ]
