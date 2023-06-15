@@ -1,6 +1,10 @@
 eth-brownie==1.19.3
 pydantic==1.10.9
 
-[test]
+[lint]
 black==22.10.0
 ruff==0.0.272
+
+[test]
+pytest~=7.3.2
+pytest-cov~=4.1.0

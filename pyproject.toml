@@ -24,6 +24,8 @@ lint = [
     "ruff==0.0.272",
 ]
 
+dev=["dao_python[test,lint]"]
+
 [tool.setuptools]
 py-modules = []
 
