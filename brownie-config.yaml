@@ -8,11 +8,3 @@ compiler:
 dotenv: .env
 wallets:
   from_key: ${PRIVATE_KEY}
-network:
-  settings:
-    gas_limit: "auto"
-    gas_price: "auto"
-    persist: true
-    reverting_tx_gas_limit: false # if false, reverting tx's will raise without broadcasting
-  networks:
-    sepolia: https://sepolia.infura.io/v3/$WEB3_INFURA_PROJECT_ID

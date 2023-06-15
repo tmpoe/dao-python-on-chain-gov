@@ -1,9 +1,9 @@
 ONESHELL:
 
-test:
+test-backend:
 	set -o allexport; source .env; set +o allexport; brownie test
 
-echo-test:
+echo-test-backend:
 	echo "set -o allexport; source .env; set +o allexport; brownie test"
 
 lint:
@@ -11,7 +11,7 @@ lint:
 	ruff scripts/ tests/
 
 install:
-	pip install ."[test]"
+	pip install ."[dev]"
 
 compile:
 	brownie compile
